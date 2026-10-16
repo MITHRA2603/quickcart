@@ -1,15 +1,11 @@
 
-* {
-  box-sizing: border-box;
+.page-title {
+  text-align: center;
+  margin: 30px 16px 10px;
+  color: #5b21b6;
 }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f5f3ff;
-  color: #222;
-}
-
-#root {
-  min-height: 100vh;
+.empty-message {
+  text-align: center;
+  padding: 35px 16px;
 }

@@ -1,24 +1,38 @@
 
+import { useCart } from "../context/CartContext";
 import "../styles/CartSidebar.css";
 
-function CartSidebar({
-  isOpen,
-  onClose,
-  cart,
-  onUpdateQuantity,
-  onRemoveItem,
-  totalPrice,
-}) {
+function CartSidebar() {
+  const {
+    cart,
+    isCartOpen,
+    setIsCartOpen,
+    updateQuantity,
+    removeFromCart,
+    totalPrice,
+  } = useCart();
+
   return (
     <>
-      {isOpen && (
-        <div className="cart-overlay" onClick={onClose}></div>
+      {isCartOpen && (
+        <div
+          className="cart-overlay"
+          onClick={() => setIsCartOpen(false)}
+        />
       )}
 
-      <aside className={`cart-sidebar ${isOpen ? "open" : ""}`}>
+      <aside
+        className={`cart-sidebar ${isCartOpen ? "open" : ""}`}
+        aria-label="Shopping cart"
+        aria-hidden={!isCartOpen}
+      >
         <div className="cart-header">
           <h2>Your Cart</h2>
-          <button className="close-cart" onClick={onClose}>
+          <button
+            className="close-cart"
+            onClick={() => setIsCartOpen(false)}
+            aria-label="Close cart"
+          >
             ✕
           </button>
         </div>
@@ -37,30 +51,21 @@ function CartSidebar({
 
                   <div className="quantity-controls">
                     <button
-                      onClick={() => onUpdateQuantity(item.id, -1)}
-                      aria-label={`Decrease ${item.name} quantity`}
+                      onClick={() => updateQuantity(item.id, -1)}
                     >
                       −
                     </button>
-
                     <span>{item.quantity}</span>
-
                     <button
-                      onClick={() => onUpdateQuantity(item.id, 1)}
-                      aria-label={`Increase ${item.name} quantity`}
+                      onClick={() => updateQuantity(item.id, 1)}
                     >
                       +
                     </button>
                   </div>
 
-                  <p>
-                    Subtotal: ₹
-                    {(item.price * item.quantity).toLocaleString("en-IN")}
-                  </p>
-
                   <button
                     className="remove-item"
-                    onClick={() => onRemoveItem(item.id)}
+                    onClick={() => removeFromCart(item.id)}
                   >
                     Remove
                   </button>
@@ -71,10 +76,11 @@ function CartSidebar({
         </div>
 
         <div className="cart-footer">
-          <h3>
-            Total: ₹{totalPrice.toLocaleString("en-IN")}
-          </h3>
-          <button className="continue-shopping" onClick={onClose}>
+          <h3>Total: ₹{totalPrice.toLocaleString("en-IN")}</h3>
+          <button
+            className="continue-shopping"
+            onClick={() => setIsCartOpen(false)}
+          >
             Continue Shopping
           </button>
         </div>
